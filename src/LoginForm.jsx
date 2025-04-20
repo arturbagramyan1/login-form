@@ -9,13 +9,17 @@ function LoginForm() {
 		return { login: "", email: "", password: "" };
 	};
 	const [info, setInfo] = useState(loadFromStorage);
-
+	const [showPassword, setShowPassword] = useState(false);
 	const handleInfo = (key, value) => {
 		setInfo({ ...info, [key]: value });
 	};
 
 	const handleSave = () => {
 		localStorage.setItem("loginFormData", JSON.stringify(info));
+	};
+
+	const handleShowPassword = () => {
+		setShowPassword(!showPassword);
 	};
 
 	const isValidLogin = new RegExp("^[A-Z][A-Za-zd]{5,}$").test(info.login);
@@ -55,11 +59,16 @@ function LoginForm() {
 			{!isValidEmail && <div>Wrong Email</div>}
 
 			<label htmlFor="password_id">Password</label>
-			<input
-				value={info.password}
-				type="password"
-				onChange={(e) => handleInfo("password", e.target.value)}
-			/>
+			<div className="passwordWrapper">
+				<input
+					value={info.password}
+					type={showPassword ? "text" : "password"}
+					onChange={(e) => handleInfo("password", e.target.value)}
+				/>
+				<button className="passwordButton" onClick={handleShowPassword}>
+					{showPassword ? "👁️" : "👁️‍🗨️"}
+				</button>
+			</div>
 			{!isValidPassword && (
 				<div>
 					At least 8 characters <br />
@@ -68,7 +77,6 @@ function LoginForm() {
 					At least one number <br /> At least one special character
 				</div>
 			)}
-			{console.log(isValidPassword, info.password)}
 			<button
 				type="submit"
 				disabled={!(isValidEmail && isValidLogin && isValidPassword)}
