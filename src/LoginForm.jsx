@@ -1,5 +1,5 @@
-import { use, useEffect, useState } from "react";
-
+import { useState } from "react";
+import "./LoginForm.css";
 function LoginForm() {
 	const loadFromStorage = () => {
 		if (localStorage.getItem("loginFormData")) {
@@ -42,6 +42,7 @@ function LoginForm() {
 			{!isValidLogin && (
 				<div>
 					Must be at least 6 characters <br /> Starts with a capital letter
+					<br /> No numbers
 				</div>
 			)}
 			<input
@@ -70,7 +71,7 @@ function LoginForm() {
 			{console.log(isValidPassword, info.password)}
 			<button
 				type="submit"
-				disabled={!(isValidEmail && !isValidLogin)}
+				disabled={!(isValidEmail && isValidLogin && isValidPassword)}
 				onClick={handleSave}>
 				Submit
 			</button>
